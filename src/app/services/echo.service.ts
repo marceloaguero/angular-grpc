@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { EchoClient } from "../pb/EchoServiceClientPb";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root"
 })
 export class EchoService {
     public echoClient: EchoClient;

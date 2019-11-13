@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { BehaviorSubject, Observable, Subject } from "rxjs";
+// import { BehaviorSubject, Observable, Subject } from "rxjs";
 import * as grpcWeb from 'grpc-web';
 import { EchoService } from "../../services/echo.service";
 import { EchoRequest, EchoResponse } from "../../pb/echo_pb";
@@ -10,33 +10,29 @@ import { EchoClient } from "../../pb/EchoServiceClientPb";
     selector: 'app-echo',
     templateUrl: './echo.component.html'
 })
-export class EchoComponent implements OnInit {
+export class EchoComponent {
 
     private echoClient: EchoClient;
-    private streamSubject: BehaviorSubject<EchoResponse>;
 
     result: any;
-    items: string[] = [];
 
     constructor(private echoService: EchoService) {
         const initialResponse = new EchoResponse();
         initialResponse.setMessage('Starting');
-        this.streamSubject =  new BehaviorSubject<EchoResponse>(initialResponse);
         if (!this.echoClient) {
             this.echoClient = this.echoService.echoClient;
         }
     }
 
     ngOnInit() {
-        this.streamObs$().subscribe((response) => {
-            this.items.push(response.getMessage());
-        });
     }
 
-    sayHello(message: string): any {
+    echo(message: string): any {
         const request = new EchoRequest();
         request.setMessage(message);
 
+        console.log("Pasa")
+        console.log(message)
         const call = this.echoClient.unaryEcho(request, null,
         (err: grpcWeb.Error, response: EchoResponse) => {
             this.result = response.getMessage();
@@ -46,7 +42,4 @@ export class EchoComponent implements OnInit {
         });
     }
 
-    streamObs$() {
-        return this.streamSubject.asObservable();
-    }
 }
