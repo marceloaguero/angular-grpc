@@ -16,11 +16,6 @@ export class EchoClient {
                response: EchoResponse) => void
   ): grpcWeb.ClientReadableStream<EchoResponse>;
 
-  serverStreamingEcho(
-    request: EchoRequest,
-    metadata?: grpcWeb.Metadata
-  ): grpcWeb.ClientReadableStream<EchoResponse>;
-
 }
 
 export class EchoPromiseClient {
@@ -32,11 +27,6 @@ export class EchoPromiseClient {
     request: EchoRequest,
     metadata?: grpcWeb.Metadata
   ): Promise<EchoResponse>;
-
-  serverStreamingEcho(
-    request: EchoRequest,
-    metadata?: grpcWeb.Metadata
-  ): grpcWeb.ClientReadableStream<EchoResponse>;
 
 }
 

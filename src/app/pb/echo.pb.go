@@ -112,20 +112,16 @@ func init() {
 func init() { proto.RegisterFile("echo.proto", fileDescriptor_08134aea513e0001) }
 
 var fileDescriptor_08134aea513e0001 = []byte{
-	// 194 bytes of a gzipped FileDescriptorProto
+	// 135 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4a, 0x4d, 0xce, 0xc8,
 	0xd7, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x07, 0xb1, 0xe3, 0x0b, 0x92, 0x94, 0xd4, 0xb9,
 	0xb8, 0x5d, 0x93, 0x33, 0xf2, 0x83, 0x52, 0x0b, 0x4b, 0x53, 0x8b, 0x4b, 0x84, 0x24, 0xb8, 0xd8,
 	0x73, 0x53, 0x8b, 0x8b, 0x13, 0xd3, 0x53, 0x25, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83, 0x60, 0x5c,
-	0x25, 0x0d, 0x2e, 0x1e, 0x88, 0xc2, 0xe2, 0x82, 0xfc, 0xbc, 0xe2, 0x54, 0xdc, 0x2a, 0x8d, 0x16,
-	0x33, 0x71, 0xb1, 0x80, 0x94, 0x0a, 0x59, 0x71, 0x71, 0x86, 0xe6, 0x25, 0x16, 0x55, 0x82, 0x39,
-	0x22, 0x7a, 0x50, 0x2b, 0xf5, 0x90, 0xec, 0x93, 0x12, 0x45, 0x13, 0x85, 0x18, 0xae, 0xc4, 0x20,
-	0xe4, 0xc6, 0x25, 0x1c, 0x9c, 0x5a, 0x54, 0x96, 0x5a, 0x14, 0x5c, 0x52, 0x94, 0x9a, 0x98, 0x9b,
-	0x99, 0x97, 0x4e, 0x86, 0x29, 0x06, 0x8c, 0x20, 0x73, 0x9c, 0x73, 0x32, 0x53, 0xf3, 0x4a, 0x28,
-	0x31, 0x47, 0x83, 0x51, 0xc8, 0x9f, 0x4b, 0xca, 0x29, 0x33, 0x25, 0xb3, 0x28, 0x35, 0xb9, 0x24,
-	0x33, 0x3f, 0x2f, 0x31, 0x87, 0x32, 0xe3, 0x0c, 0x18, 0x9d, 0x58, 0xa2, 0x98, 0x0a, 0x92, 0x92,
-	0xd8, 0xc0, 0xd1, 0x61, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x23, 0x04, 0x7b, 0xc1, 0x9c, 0x01,
-	0x00, 0x00,
+	0x25, 0x0d, 0x2e, 0x1e, 0x88, 0xc2, 0xe2, 0x82, 0xfc, 0xbc, 0xe2, 0x54, 0xdc, 0x2a, 0x8d, 0x9c,
+	0xb8, 0x58, 0x40, 0x2a, 0x85, 0xac, 0xb8, 0x38, 0x43, 0xf3, 0x12, 0x8b, 0x2a, 0xc1, 0x1c, 0x11,
+	0x3d, 0xa8, 0x8d, 0x7a, 0x48, 0xd6, 0x49, 0x89, 0xa2, 0x89, 0x42, 0xcc, 0x56, 0x62, 0x70, 0x62,
+	0x89, 0x62, 0x2a, 0x48, 0x4a, 0x62, 0x03, 0x3b, 0xd6, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x55,
+	0x5d, 0x76, 0x95, 0xba, 0x00, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -142,12 +138,6 @@ const _ = grpc.SupportPackageIsVersion4
 type EchoClient interface {
 	// UnaryEcho is unary echo.
 	UnaryEcho(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error)
-	// ServerStreamingEcho is server side streaming.
-	ServerStreamingEcho(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (Echo_ServerStreamingEchoClient, error)
-	// ClientStreamingEcho is client side streaming.
-	ClientStreamingEcho(ctx context.Context, opts ...grpc.CallOption) (Echo_ClientStreamingEchoClient, error)
-	// BidirectionalStreamingEcho is bidi streaming.
-	BidirectionalStreamingEcho(ctx context.Context, opts ...grpc.CallOption) (Echo_BidirectionalStreamingEchoClient, error)
 }
 
 type echoClient struct {
@@ -167,113 +157,10 @@ func (c *echoClient) UnaryEcho(ctx context.Context, in *EchoRequest, opts ...grp
 	return out, nil
 }
 
-func (c *echoClient) ServerStreamingEcho(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (Echo_ServerStreamingEchoClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Echo_serviceDesc.Streams[0], "/echo_pb.Echo/ServerStreamingEcho", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &echoServerStreamingEchoClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type Echo_ServerStreamingEchoClient interface {
-	Recv() (*EchoResponse, error)
-	grpc.ClientStream
-}
-
-type echoServerStreamingEchoClient struct {
-	grpc.ClientStream
-}
-
-func (x *echoServerStreamingEchoClient) Recv() (*EchoResponse, error) {
-	m := new(EchoResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *echoClient) ClientStreamingEcho(ctx context.Context, opts ...grpc.CallOption) (Echo_ClientStreamingEchoClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Echo_serviceDesc.Streams[1], "/echo_pb.Echo/ClientStreamingEcho", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &echoClientStreamingEchoClient{stream}
-	return x, nil
-}
-
-type Echo_ClientStreamingEchoClient interface {
-	Send(*EchoRequest) error
-	CloseAndRecv() (*EchoResponse, error)
-	grpc.ClientStream
-}
-
-type echoClientStreamingEchoClient struct {
-	grpc.ClientStream
-}
-
-func (x *echoClientStreamingEchoClient) Send(m *EchoRequest) error {
-	return x.ClientStream.SendMsg(m)
-}
-
-func (x *echoClientStreamingEchoClient) CloseAndRecv() (*EchoResponse, error) {
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	m := new(EchoResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *echoClient) BidirectionalStreamingEcho(ctx context.Context, opts ...grpc.CallOption) (Echo_BidirectionalStreamingEchoClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Echo_serviceDesc.Streams[2], "/echo_pb.Echo/BidirectionalStreamingEcho", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &echoBidirectionalStreamingEchoClient{stream}
-	return x, nil
-}
-
-type Echo_BidirectionalStreamingEchoClient interface {
-	Send(*EchoRequest) error
-	Recv() (*EchoResponse, error)
-	grpc.ClientStream
-}
-
-type echoBidirectionalStreamingEchoClient struct {
-	grpc.ClientStream
-}
-
-func (x *echoBidirectionalStreamingEchoClient) Send(m *EchoRequest) error {
-	return x.ClientStream.SendMsg(m)
-}
-
-func (x *echoBidirectionalStreamingEchoClient) Recv() (*EchoResponse, error) {
-	m := new(EchoResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 // EchoServer is the server API for Echo service.
 type EchoServer interface {
 	// UnaryEcho is unary echo.
 	UnaryEcho(context.Context, *EchoRequest) (*EchoResponse, error)
-	// ServerStreamingEcho is server side streaming.
-	ServerStreamingEcho(*EchoRequest, Echo_ServerStreamingEchoServer) error
-	// ClientStreamingEcho is client side streaming.
-	ClientStreamingEcho(Echo_ClientStreamingEchoServer) error
-	// BidirectionalStreamingEcho is bidi streaming.
-	BidirectionalStreamingEcho(Echo_BidirectionalStreamingEchoServer) error
 }
 
 // UnimplementedEchoServer can be embedded to have forward compatible implementations.
@@ -282,15 +169,6 @@ type UnimplementedEchoServer struct {
 
 func (*UnimplementedEchoServer) UnaryEcho(ctx context.Context, req *EchoRequest) (*EchoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnaryEcho not implemented")
-}
-func (*UnimplementedEchoServer) ServerStreamingEcho(req *EchoRequest, srv Echo_ServerStreamingEchoServer) error {
-	return status.Errorf(codes.Unimplemented, "method ServerStreamingEcho not implemented")
-}
-func (*UnimplementedEchoServer) ClientStreamingEcho(srv Echo_ClientStreamingEchoServer) error {
-	return status.Errorf(codes.Unimplemented, "method ClientStreamingEcho not implemented")
-}
-func (*UnimplementedEchoServer) BidirectionalStreamingEcho(srv Echo_BidirectionalStreamingEchoServer) error {
-	return status.Errorf(codes.Unimplemented, "method BidirectionalStreamingEcho not implemented")
 }
 
 func RegisterEchoServer(s *grpc.Server, srv EchoServer) {
@@ -315,79 +193,6 @@ func _Echo_UnaryEcho_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Echo_ServerStreamingEcho_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(EchoRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(EchoServer).ServerStreamingEcho(m, &echoServerStreamingEchoServer{stream})
-}
-
-type Echo_ServerStreamingEchoServer interface {
-	Send(*EchoResponse) error
-	grpc.ServerStream
-}
-
-type echoServerStreamingEchoServer struct {
-	grpc.ServerStream
-}
-
-func (x *echoServerStreamingEchoServer) Send(m *EchoResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func _Echo_ClientStreamingEcho_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(EchoServer).ClientStreamingEcho(&echoClientStreamingEchoServer{stream})
-}
-
-type Echo_ClientStreamingEchoServer interface {
-	SendAndClose(*EchoResponse) error
-	Recv() (*EchoRequest, error)
-	grpc.ServerStream
-}
-
-type echoClientStreamingEchoServer struct {
-	grpc.ServerStream
-}
-
-func (x *echoClientStreamingEchoServer) SendAndClose(m *EchoResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func (x *echoClientStreamingEchoServer) Recv() (*EchoRequest, error) {
-	m := new(EchoRequest)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func _Echo_BidirectionalStreamingEcho_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(EchoServer).BidirectionalStreamingEcho(&echoBidirectionalStreamingEchoServer{stream})
-}
-
-type Echo_BidirectionalStreamingEchoServer interface {
-	Send(*EchoResponse) error
-	Recv() (*EchoRequest, error)
-	grpc.ServerStream
-}
-
-type echoBidirectionalStreamingEchoServer struct {
-	grpc.ServerStream
-}
-
-func (x *echoBidirectionalStreamingEchoServer) Send(m *EchoResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func (x *echoBidirectionalStreamingEchoServer) Recv() (*EchoRequest, error) {
-	m := new(EchoRequest)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 var _Echo_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "echo_pb.Echo",
 	HandlerType: (*EchoServer)(nil),
@@ -397,23 +202,6 @@ var _Echo_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Echo_UnaryEcho_Handler,
 		},
 	},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "ServerStreamingEcho",
-			Handler:       _Echo_ServerStreamingEcho_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "ClientStreamingEcho",
-			Handler:       _Echo_ClientStreamingEcho_Handler,
-			ClientStreams: true,
-		},
-		{
-			StreamName:    "BidirectionalStreamingEcho",
-			Handler:       _Echo_BidirectionalStreamingEcho_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
-		},
-	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "echo.proto",
 }

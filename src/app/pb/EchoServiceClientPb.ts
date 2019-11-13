@@ -54,24 +54,5 @@ export class EchoClient {
       callback);
   }
 
-  methodInfoServerStreamingEcho = new grpcWeb.AbstractClientBase.MethodInfo(
-    EchoResponse,
-    (request: EchoRequest) => {
-      return request.serializeBinary();
-    },
-    EchoResponse.deserializeBinary
-  );
-
-  serverStreamingEcho(
-    request: EchoRequest,
-    metadata?: grpcWeb.Metadata) {
-    return this.client_.serverStreaming(
-      this.hostname_ +
-        '/echo_pb.Echo/ServerStreamingEcho',
-      request,
-      metadata || {},
-      this.methodInfoServerStreamingEcho);
-  }
-
 }
 
